@@ -38,7 +38,7 @@ function Footer() {
           <img src="4-support.png" alt="" />
         </div>
         <div>
-          <h4>Online Support          </h4>
+          <h4>Online Support  testing sporrt        </h4>
           <p>Ensure product quality</p>
         </div>
       </div>
