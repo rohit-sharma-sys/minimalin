@@ -60,6 +60,8 @@ const FeaturedCollectionSlider = () => {
   return (
     <div className="container container-with">
       <h1 className="bft-collection">Featured Collection<span className="dots">.</span></h1>
+      <h1>Testing Of Git Branch</h1>
+      <p>sdhasugdasghudh</p>
       <Slider {...settings}>
         {products.map(product => (
 
