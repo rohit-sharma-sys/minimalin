@@ -49,13 +49,13 @@ function MiniCart() {
                   <td>${item.price.toFixed(2)}</td>
                   <td>{item.quantity}</td>
                   <td>
-                    <button
+                    {/* <button
                       className="remove-icon"
                       onClick={() => removeFromCart(item.id)}
                       aria-label={`Remove ${item.title}`}
                     >
                       <i className="fa-solid fa-x"></i>
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               ))}

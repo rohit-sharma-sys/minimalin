@@ -7,10 +7,13 @@ import ReactImageMagnify from 'react-image-magnify';
 import Zoom from 'react-medium-image-zoom';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
-import MiniCart from '../MiniCart';
-
+import { useSnackbar } from 'notistack';
 
 function SingleProducts() {
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const { enqueueSnackbar } = useSnackbar();
    const { id } = useParams();
    const navigate = useNavigate(); 
    const { addToCart } = useContext(CartContext);
@@ -34,14 +37,14 @@ function SingleProducts() {
         fetch(`https://dummyjson.com/products?category=${data.category}&exclude=${id}`)
           .then((res) => res.json())
           .then((data) => {
-            setRelatedProducts(data.products.slice(20, 24)); 
+            setRelatedProducts(data.products.slice(21, 25)); 
           })
           .catch((error) => console.error('Error fetching related products:', error));
 
         fetch('https://dummyjson.com/products')
           .then((res) => res.json())
           .then((data) => {
-            setRecentlyViewed(data.products.slice(25, 29)); 
+            setRecentlyViewed(data.products.slice(26, )); 
           })
           .catch((error) => console.error('Error fetching recently viewed products:', error));
 
@@ -59,10 +62,9 @@ function SingleProducts() {
 
   if (!product) return <LOader />;
   
-  const handleAddToCart = () => {
-    const quantity = parseInt(document.getElementById('quantity').value, 10) || 1;
-    addToCart({ ...product, quantity });
-    navigate('/Cartpage');
+  const handleAddToCart = (product) => {
+    addToCart({ ...product, quantity: 1 });
+    enqueueSnackbar(`${product.title} added to cart!`, { variant: 'success' });
   };
 
   const handleQuantityChange = (e) => {
@@ -70,6 +72,15 @@ function SingleProducts() {
   };
 
 
+  const handleShowPopup = (product) => {
+    setSelectedProduct(product);
+    setPopupVisible(true);
+  };
+
+  const handleClosePopup = () => {
+    setPopupVisible(false);
+    setSelectedProduct(null);
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -164,7 +175,10 @@ function SingleProducts() {
              />
             </div>
             <div className="action-buttons">
-            <button className="add-to-cart banner_button" onClick={handleAddToCart}>
+            <button className="add-to-cart banner_button"  onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToCart(product);
+                      }}>
                 <span><i className='fa-solid fa-cart-shopping'></i></span>Add to Cart
               </button>
               <button className="buy-now banner_button">Buy Now</button>
@@ -195,7 +209,6 @@ function SingleProducts() {
         </div>
       </div>
 
-      {/* Tabs for Description, Reviews, Shipping Policy */}
       <div className="tab-section">
         <div className="tabs">
           <button className={`tab-btn ${activeTab === 'description' ? 'active' : ''}`} onClick={() => setActiveTab('description')}>Description</button>
@@ -212,46 +225,85 @@ function SingleProducts() {
       <h1 className="bft-collection">Related Products<span className="dots">.</span></h1>
         <div className="related-product-grid">
           {relatedProducts.map((relatedProduct) => (
-            <Link target='_top' to={`/product/${relatedProduct.id}`} className="related-product product-card-link cat-col coll-col" key={relatedProduct.id}>
-            <div className="related-product " key={relatedProduct.id}>
+            <div className="related-product product-card-link cat-col coll-col " key={relatedProduct.id}>
+              <Link target='_top' to={`/product/${relatedProduct.id}`} className="related-product product-card-link cat-col coll-col" key={relatedProduct.id}>
               <img src={relatedProduct.thumbnail} alt="Related Product" />
               <p className="related-product-title cat-title">{relatedProduct.title}</p>
               <p className="related-product-price cat-title cat-price">$ {relatedProduct.price}</p>
+            </Link>
               <div className="featured-icon-div">
               <ul className="collection-icons">
-                <li><i className="far fa-eye"></i></li>
-                <li><i className="fas fa-shopping-cart"></i></li>
-                <li><i className="fas fa-heart"></i></li>
-                <li><i className="fas fa-exchange-alt"></i></li>
+              <li onClick={() => handleShowPopup(relatedProduct)}>
+                    <i className="far fa-eye" ></i>
+                  </li>
+                  <li onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToCart(relatedProduct);
+                      }}>
+                    <button
+                      style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                    >
+                      <i className="fas fa-shopping-cart"></i>
+                    </button>
+                  </li>
+                {/* <li><i className="fas fa-heart"></i></li>
+                <li><i className="fas fa-exchange-alt"></i></li> */}
               </ul>
             </div>  
+            {popupVisible && selectedProduct && (
+        <div className="popup-overlay">
+          <div className="popup-content">
+            <span className="popup-close" onClick={handleClosePopup}>&times;</span>
+            <img src={selectedProduct.thumbnail} alt={selectedProduct.title} className="popup-image" />
+            <h2>{selectedProduct.title}</h2>
+            <p>{selectedProduct.description}</p>
+            <div className='product_extra_details'>
+            <p><b>Price: </b>${selectedProduct.price}</p>
+            <p><strong>Type:</strong> {selectedProduct.category}</p>
+            <p><b>warranty: </b>{selectedProduct.warrantyInformation}</p>
+          </div>
+            {/* <button className="view-cart-button checkout-button add-to-cart banner_button popup" onClick={() => handleAddToCart(selectedProduct)}>Add to Cart</button> */}
+          </div>
+        </div>
+      )}
             </div>
-            </Link>
+            
           ))}
         </div>
       </div>
 
+
       {/* Recently Viewed */}
-      
-      <div className="recently-viewed-products">
+          <div className="recently-viewed-products">
         <h1 className="bft-collection">Recently Viewed<span className="dots">.</span></h1>
         <div className="recently-viewed-grid">
           {recentlyViewed.map((viewedProduct) => (
-          <Link target='_top' to={`/product/${viewedProduct.id}`} className="recently-viewed-item product-card-link cat-col coll-col" key={viewedProduct.id}>
-            <div className="recently-viewed-item" key={viewedProduct.id}>
+            <div className="recently-viewed-item product-card-link cat-col coll-col" key={viewedProduct.id}>
               <img src={viewedProduct.thumbnail} alt="Recently Viewed" />
+              <Link target='_top' to={`/product/${viewedProduct.id}`} className="recently-viewed-item product-card-link cat-col coll-col" key={viewedProduct.id}>
               <p className="recently-viewed-title cat-title">{viewedProduct.title}</p>
               <p className="recently-viewed-price cat-title cat-price">$ {viewedProduct.price}</p>
+            </Link>
               <div className="featured-icon-div">
               <ul className="collection-icons">
-                <li><i className="far fa-eye"></i></li>
-                <li><i className="fas fa-shopping-cart"></i></li>
-                <li><i className="fas fa-heart"></i></li>
-                <li><i className="fas fa-exchange-alt"></i></li>
+              <li onClick={() => handleShowPopup(viewedProduct)}>
+                    <i className="far fa-eye" ></i>
+                  </li>
+                  <li onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToCart(viewedProduct);
+                      }}>
+                    <button
+                      style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                    >
+                      <i className="fas fa-shopping-cart"></i>
+                    </button>
+                  </li>
+                {/* <li><i className="fas fa-heart"></i></li>
+                <li><i className="fas fa-exchange-alt"></i></li> */}
               </ul>
             </div> 
             </div>
-            </Link>
           ))}
         </div>
       </div>
@@ -259,14 +311,6 @@ function SingleProducts() {
       {/* FAQ Section */}
       <div className="faq-section">
         <h2>FAQs</h2>
-        <div className="featdsured-ds-div">
-              <ul className="collecsdtion-icdsons">
-                <li><i className="far fa-eye"></i></li>
-                <li><i className="fas fa-shopping-cart"></i></li>
-                <li><i className="fas fa-heart"></i></li>
-                <li><i className="fas fa-exchange-alt"></i></li>
-              </ul>
-            </div> 
         <div className="faq-item">
           <h3>How to buy a product?</h3>
           <p>Instructions on buying the product</p>

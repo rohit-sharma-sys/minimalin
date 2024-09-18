@@ -126,9 +126,9 @@ function Header() {
   </div>
               </div> */}
             </li>
-            <li className="nav-items">Product<i class="fa-solid fa-chevron-down"></i></li>
-            <li className="nav-items">Blog<i class="fa-solid fa-chevron-down"></i></li>
-            <li className="nav-items">Pages<i class="fa-solid fa-chevron-down"></i></li>
+            <li className="nav-items">Product</li>
+            <li className="nav-items">Blog</li>
+            <li className="nav-items">Pages</li>
           </ul>
           <i className={`fa ${isNavbarOpen ? 'fa-times' : 'fa-bars'}`} aria-hidden="true" onClick={toggleNavbar}></i>
 
