@@ -128,8 +128,8 @@ function Shop() {
         <div className="shop-container container-with">
             <div className="sidebar">
                 <div className="sidebar_sub_row">
-                    <h2>Categories</h2>
                     <div className="cat-list-main">
+                    <h2>Categories</h2>
                         <div className="cat-col">
                             <ul className="category-list">
                                 <li
