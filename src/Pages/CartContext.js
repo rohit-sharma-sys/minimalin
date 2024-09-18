@@ -1,49 +1,43 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(() => {
-    const savedCart = localStorage.getItem('cartItems');
-    return savedCart ? JSON.parse(savedCart) : [];
+    const storedItems = localStorage.getItem('cartItems');
+    return storedItems ? JSON.parse(storedItems) : [];
   });
 
-  const addToCart = (product) => {
-    setCartItems((prevItems) => {
-      const existingProductIndex = prevItems.findIndex(item => item.id === product.id);
-      if (existingProductIndex > -1) {
-        const updatedItems = [...prevItems];
-        updatedItems[existingProductIndex].quantity = product.quantity; // Update quantity
-        localStorage.setItem('cartItems', JSON.stringify(updatedItems));
-        return updatedItems;
-      } else {
-        const newItems = [...prevItems, product];
-        localStorage.setItem('cartItems', JSON.stringify(newItems));
-        return newItems;
-      }
-    });
-  };
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
 
-  const updateQuantity = (productId, newQuantity) => {
-    setCartItems((prevItems) => {
-      const updatedItems = prevItems.map(item =>
-        item.id === productId ? { ...item, quantity: newQuantity } : item
-      );
-      localStorage.setItem('cartItems', JSON.stringify(updatedItems));
-      return updatedItems;
+  const addToCart = (product) => {
+    setCartItems(prevItems => {
+      const existingProduct = prevItems.find(item => item.id === product.id);
+      if (existingProduct) {
+        return prevItems.map(item =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prevItems, { ...product, quantity: 1 }];
     });
   };
 
   const removeFromCart = (productId) => {
-    setCartItems((prevItems) => {
-      const updatedItems = prevItems.filter(item => item.id !== productId);
-      localStorage.setItem('cartItems', JSON.stringify(updatedItems));
-      return updatedItems;
-    });
+    setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
+  };
+
+  const updateQuantity = (productId, newQuantity) => {
+    setCartItems(prevItems => 
+      prevItems.map(item =>
+        item.id === productId ? { ...item, quantity: newQuantity } : item
+      )
+    );
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, updateQuantity, removeFromCart }}>
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQuantity }}>
       {children}
     </CartContext.Provider>
   );

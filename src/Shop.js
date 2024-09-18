@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import LOader from './Pages/LOader'; // Assuming LOader is the loader component
+import { CartContext } from './Pages/CartContext'; // Import CartContext
+import { useSnackbar } from 'notistack';
+
 
 function Shop() {
     const [products, setProducts] = useState([]);
@@ -12,9 +15,14 @@ function Shop() {
     const [selectedPriceRange, setSelectedPriceRange] = useState([0, 1000]);
     const [visibleProducts, setVisibleProducts] = useState(6); // State to manage visible products
     const [loading, setLoading] = useState(true); // Track loading state
-
+    const { addToCart } = useContext(CartContext); // Access addToCart from CartContext
+    const { enqueueSnackbar } = useSnackbar();
+    const [popupVisible, setPopupVisible] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+  
+  
     useEffect(() => {
-        setLoading(true); // Show loader while fetching
+        setLoading(true);
         fetch('https://dummyjson.com/products')
             .then(res => res.json())
             .then(data => {
@@ -24,30 +32,30 @@ function Shop() {
                 const maxPrice = Math.max(...prices);
                 setPriceRange([minPrice, maxPrice]);
                 setSelectedPriceRange([minPrice, maxPrice]);
-                setLoading(false); // Hide loader when data is fetched
+                setLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching products:', error);
-                setLoading(false); // Hide loader even if there's an error
+                setLoading(false);
             });
     }, []);
 
     useEffect(() => {
-        setLoading(true); // Show loader while fetching categories
+        setLoading(true);
         fetch('https://dummyjson.com/products/categories')
             .then(res => res.json())
             .then(data => {
                 setCategories(data);
-                setLoading(false); // Hide loader when categories are fetched
+                setLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching categories:', error);
-                setLoading(false); // Hide loader even if there's an error
+                setLoading(false);
             });
     }, []);
 
     const handleAvailabilityChange = (e) => {
-        setSelectedAvailability(e.target.value); // Store selected radio button value
+        setSelectedAvailability(e.target.value);
     };
 
     const handleSortOrderChange = (e) => {
@@ -56,28 +64,28 @@ function Shop() {
 
     const handleCategoryChange = (categorySlug) => {
         setSelectedCategory(categorySlug);
-        setLoading(true); // Show loader while fetching category products
+        setLoading(true);
         if (categorySlug) {
             fetch(`https://dummyjson.com/products/category/${categorySlug}`)
                 .then(res => res.json())
                 .then(data => {
                     setProducts(data.products);
-                    setLoading(false); // Hide loader after fetching category products
+                    setLoading(false);
                 })
                 .catch(error => {
                     console.error('Error fetching products by category:', error);
-                    setLoading(false); // Hide loader even if there's an error
+                    setLoading(false);
                 });
         } else {
             fetch('https://dummyjson.com/products')
                 .then(res => res.json())
                 .then(data => {
                     setProducts(data.products);
-                    setLoading(false); // Hide loader after fetching all products
+                    setLoading(false);
                 })
                 .catch(error => {
                     console.error('Error fetching all products:', error);
-                    setLoading(false); // Hide loader even if there's an error
+                    setLoading(false);
                 });
         }
     };
@@ -94,7 +102,6 @@ function Shop() {
 
     const filteredProducts = products
         .filter(product => {
-            // Availability filter
             if (selectedAvailability) {
                 if (selectedAvailability === 'inStock' && product.availabilityStatus === 'In Stock') {
                     return true;
@@ -107,7 +114,6 @@ function Shop() {
             return true;
         })
         .filter(product => {
-            // Price filter
             return product.price >= selectedPriceRange[0] && product.price <= selectedPriceRange[1];
         })
         .sort((a, b) => {
@@ -116,20 +122,32 @@ function Shop() {
             return 0;
         });
 
-    // Function to handle "Load More" button
     const handleLoadMore = () => {
         setVisibleProducts(prevVisibleProducts => prevVisibleProducts + 6);
     };
 
+    const handleAddToCart = (product) => {
+        addToCart({ ...product, quantity: 1 });
+        enqueueSnackbar(`${product.title} added to cart!`, { variant: 'success' });
+      };
     // Show loader if loading
     if (loading) return <LOader />;
-
+    const handleShowPopup = (product) => {
+        setSelectedProduct(product);
+        setPopupVisible(true);
+      };
+    
+      const handleClosePopup = () => {
+        setPopupVisible(false);
+        setSelectedProduct(null);
+      };
+    
     return (
         <div className="shop-container container-with">
             <div className="sidebar">
                 <div className="sidebar_sub_row">
-                    <div className="cat-list-main">
                     <h2>Categories</h2>
+                    <div className="cat-list-main">
                         <div className="cat-col">
                             <ul className="category-list">
                                 <li
@@ -154,7 +172,6 @@ function Shop() {
                     </div>
                     <hr className='hr-line' />
 
-                    {/* Availability Filter with Radio Buttons */}
                     <div className="filter-section">
                         <h3>Filter by Availability</h3>
                         <div className='availability'>
@@ -244,36 +261,58 @@ function Shop() {
                 </div>
 
                 <div className="product-grid" id='shop_page'>
-                    {filteredProducts.slice(0, visibleProducts).map(product => (
-                        <Link to={`/product/${product.id}`} key={product.id} className="product-card-link cat-col coll-col">
-                            <div className="product-card">
-                                <div className="product-thumbnail">
-                                    <img src={product.thumbnail} alt={product.title} className="product-image" />
-                                    {product.discount && <div className="product-discount">-{product.discount}%</div>}
-                                </div>
-                                <div className="product-details">
-                                    <h4 className="product-title">{product.title}</h4>
-                                    <p className="product-price">$ {product.price}</p>
-                                    <p className="cat-discount cat-stock">{product.discountPercentage}%</p>
-
-                                    <p className="product-availability cat-stock">{product.availabilityStatus}</p>
-                                    {/* <p>product id{product.id}</p>
-                                    <p>{product.warrantyInformation}</p> */}
-                                </div>
-                                <div className="featured-icon-div">
-                                    <ul className="collection-icons">
-                                        <li><i className="far fa-eye"></i></li>
-                                        <li><i className="fas fa-shopping-cart"></i></li>
-                                        <li><i className="fas fa-heart"></i></li>
-                                        <li><i className="fas fa-exchange-alt"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </Link>
-                    ))}
+                   {filteredProducts.slice(0, visibleProducts).map(product => (
+                    <div key={product.id} className="product-card cat-col coll-col">
+                <Link to={`/product/${product.id}`} className="product-card-link">
+                <div className="product-thumbnail">
+                    <img src={product.thumbnail} alt={product.title} className="product-image" />
+                    {product.discount && <div className="product-discount">-{product.discount}%</div>}
                 </div>
+                <div className="product-details">
+                    <h4 className="product-title">{product.title}</h4>
+                    <p className="product-price">$ {product.price}</p>
+                    <p className="cat-discount cat-stock">{product.discountPercentage}%</p>
+                    <p className="product-availability cat-stock">{product.availabilityStatus}</p>
+                </div>
+            </Link>
+            {popupVisible && selectedProduct && (
+        <div className="popup-overlay">
+          <div className="popup-content">
+            <span className="popup-close" onClick={handleClosePopup}>&times;</span>
+            <img src={selectedProduct.thumbnail} alt={selectedProduct.title} className="popup-image" />
+            <h2>{selectedProduct.title}</h2>
+            <p>{selectedProduct.description}</p>
+            <div className='product_extra_details'>
+            <p><b>Price: </b>${selectedProduct.price}</p>
+            <p><strong>Type:</strong> {selectedProduct.category}</p>
+            <p><b>warranty: </b>{selectedProduct.warrantyInformation}</p>
+          </div>
+            {/* <button className="view-cart-button checkout-button add-to-cart banner_button popup" onClick={() => handleAddToCart(selectedProduct)}>Add to Cart</button> */}
+          </div>
+        </div>
+      )}
+            <div className="featured-icon-div">
+                <ul className="collection-icons">
+                <li onClick={() => handleShowPopup(product)}>
+                    <i className="far fa-eye" ></i>
+                  </li>
+                    <li  onClick={(e) => {
+                                e.stopPropagation(); 
+                                handleAddToCart(product);
+                            }}>
+                        <button
+                            style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                        >
+                            <i className="fas fa-shopping-cart"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    ))}
+</div>
 
-                {/* Load More Button */}
+
                 {visibleProducts < filteredProducts.length && (
                     <div className="load-more">
                         <button onClick={handleLoadMore} className="load_more_btn banner_button">Load More</button>
