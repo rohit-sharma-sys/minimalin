@@ -2363,3 +2363,26 @@ ul.collection-icons button {
 table.mini-cart-table tr:hover:hover .remove-icon{
   opacity:1 !important;
 }
+.related-product-grid-productpage {
+  display: flex;
+  flex-wrap: wrap;
+}
+.related-product-product-card-link-cat-col.coll-col-productpage {
+  width: 25%;
+}
+.related-product-product-card-link-cat-col.coll-col-productpage {
+  width: 25%;
+  padding-bottom: 56px;
+}
+h1.bft-collection-products {
+  padding-top: 65px;
+  text-align:center;
+}
+img.Collection-img {
+  background: #ddd;
+  border-radius: 10px;
+}
+.related-product-product-card-link-cat-col.coll-col-productpage.related-product.product-card-link.cat-col.coll-col:hover ul.collection-icons {
+ bottom:176px !important;
+
+}
