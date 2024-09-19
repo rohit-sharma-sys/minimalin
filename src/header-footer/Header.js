@@ -126,7 +126,7 @@ function Header() {
   </div>
               </div> */}
             </li>
-            <li className="nav-items">Product</li>
+            <li className="nav-items"><Link to="/Product">Product</Link></li>
             <li className="nav-items">Blog</li>
             <li className="nav-items">Pages</li>
           </ul>
@@ -299,8 +299,8 @@ function Header() {
         <i class="fa-solid fa-magnifying-glass"></i>
         <i class="fa-solid fa-user"></i>
         <div className="cart-icon  cart-item-count" onClick={toggleMiniCart}>
-              <i className="fas fa-shopping-cart"></i>
-              <span className="cart-item-count">{cartItems.length}</span>
+        <i class="fa-solid fa-cart-plus"></i>
+                      <span className="cart-item-count">{cartItems.length}</span>
             </div>
 
             {isMiniCartOpen && <MiniCart onClose={toggleMiniCart} />}

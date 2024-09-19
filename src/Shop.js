@@ -132,6 +132,7 @@ function Shop() {
       };
     // Show loader if loading
     if (loading) return <LOader />;
+    
     const handleShowPopup = (product) => {
         setSelectedProduct(product);
         setPopupVisible(true);

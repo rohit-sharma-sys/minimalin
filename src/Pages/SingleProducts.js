@@ -15,7 +15,6 @@ function SingleProducts() {
 
   const { enqueueSnackbar } = useSnackbar();
    const { id } = useParams();
-   const navigate = useNavigate(); 
    const { addToCart } = useContext(CartContext);
    const [quantity, setQuantity] = useState(1);
 
@@ -225,8 +224,8 @@ function SingleProducts() {
       <h1 className="bft-collection">Related Products<span className="dots">.</span></h1>
         <div className="related-product-grid">
           {relatedProducts.map((relatedProduct) => (
-            <div className="related-product product-card-link cat-col coll-col " key={relatedProduct.id}>
-              <Link target='_top' to={`/product/${relatedProduct.id}`} className="related-product product-card-link cat-col coll-col" key={relatedProduct.id}>
+            <div className="related-product product-card-link cat-col coll-col" key={relatedProduct.id}>
+              <Link target='_top' to={`/product/${relatedProduct.id}`} className="related-product product-card-link cat-col coll-col " key={relatedProduct.id}>
               <img src={relatedProduct.thumbnail} alt="Related Product" />
               <p className="related-product-title cat-title">{relatedProduct.title}</p>
               <p className="related-product-price cat-title cat-price">$ {relatedProduct.price}</p>
