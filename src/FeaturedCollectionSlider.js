@@ -15,7 +15,7 @@ const FeaturedCollectionSlider = () => {
 
   const settings = {
     dots: false,
-    arrows: false,
+    arrows: true,
     infinite: true,
     speed: 500,
     slidesToShow: 4,
