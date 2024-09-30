@@ -14,6 +14,8 @@ import CategoriesPage from './CategoriesPage';
 import SingleCategory from './SingleCategory';
 import { SnackbarProvider } from 'notistack';
 import Product from './Product';
+import BlogComponent from './BlogComponent';
+import SingleBlogPage from './SingleBlogPage';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -37,7 +39,9 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="shop" element={<Shop />} />
               <Route path="/product/:id" element={<SingleProducts />} />
+              <Route path="/blog/:id" element={<SingleBlogPage />} />
               <Route path="CartPage" element={<CartPage />} />
+              <Route path="BlogComponent" element={<BlogComponent />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/payment" element={<PaymentPage />} />
               <Route path="/CategoriesPage" element={<CategoriesPage/>} />
