@@ -2476,7 +2476,12 @@ img.Collection-img {
     grid-template-columns: auto auto;
     gap: 20px;
 }
-
+.categories-row .blog-grid {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 20px;
+    width: 100%;
+}
 .blog-card {
   padding: 20px;
   border-radius: 10px;

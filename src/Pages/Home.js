@@ -7,7 +7,7 @@ import FeaturedCollectionSlider from "../FeaturedCollectionSlider";
 import NewCollection from "../NewCollection";
 import CatComponent from "../CatComponent";
 import { Link } from "react-router-dom";
-
+import { blogs } from "../blogData";
 
 const Home = () => {
 
@@ -120,23 +120,23 @@ const Home = () => {
     <h1 className="bft-collection blog_title">Latest Blog<span className="dots">.</span></h1>
 
         <div className="categories-row blog">
-          <div className="cat-col-1">
-            <img src="blog-electronics-3_1200x.webp" alt="" className="featured-image" />
-            <p class="ltn__blog-date"><i class="far fa-calendar-alt"></i> February 29, 2024</p>
-            <h2>Unveiling Possibilities: A Deep Dive into the World of Tablets</h2>
-            <p className="readmore">Read More</p>
-          </div>
-          <div className="cat-col-2">
-            <img src="blog-electronics-2_1200x.webp" alt="" className="featured-image" />
-            <p class="ltn__blog-date"><i class="far fa-calendar-alt"></i> February 29, 2024</p>
-            <h2>Beyond the Screen: Navigating the World of Smartphones</h2>
-            <p className="readmore">Read More</p>          </div>
-          <div className="cat-col-3">
-            <img src="blog-electronics-1_1200x.webp" alt="" className="featured-image" />
-            <p class="ltn__blog-date"><i class="far fa-calendar-alt"></i> February 29, 2024</p>
-            <h2>Unleashing Wireless Freedom: The Ultimate Guide to Bluetooth Earphones</h2>
-            <p className="readmore">Read More</p>
+          
+      <div className="blog-grid">
+        {blogs.map((blog) => (
+          <div className="blog-card" key={blog.id}>
+            <img src={blog.imageUrl} alt={blog.title} />
+            <div className="blog-details">
+              <Link to={`/blog/${blog.id}`}><h2>{blog.title}</h2></Link>
+              <div className="blog-meta">
+                <span>{blog.date}</span>
+                <span>{blog.comments} comments</span>
+              </div>
+              <p>{blog.description}</p>
+              <Link to={`/blog/${blog.id}`} className="read-more">Read More</Link>
             </div>
+          </div>
+        ))}
+      </div>
         </div>
       </div>
     </>
