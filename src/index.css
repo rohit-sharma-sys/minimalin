@@ -86,7 +86,9 @@ li.top_bar_items{
   }
 }
 
-
+i.fa-solid.fa-chevron-down {
+  display: none;
+}
 /**top-bar-end**/
 
 /**header-start**/
@@ -193,7 +195,7 @@ li.nav-items {
   font-size: 17px;
 }
 .header_row.container-with .col-1 {
-  width: 20%;
+  width: 33%;
 }
 .header_row.container-with .col-2 {
   width: 60%;
@@ -653,6 +655,7 @@ ul.collection-icons li:hover i {
   width: 33%;
   margin: 20px;
 }
+
 .blog img.featured-image {
   border-radius: 15px;
   width: 100% !important;
@@ -1099,6 +1102,7 @@ padding: 0px;
   display: flex;
   align-items: center;
   padding-top:20px ;
+  flex-wrap: wrap;
 }
 .eyeonproduct img {
   width: 25px;
@@ -1160,6 +1164,7 @@ hr.full-width-hr {
   padding: 0;
   font-weight: 600;
   align-items: center;
+  flex-wrap: wrap;
 }
 .thumbnail-images img {
   width: 102px;
@@ -1639,6 +1644,7 @@ h1.cat-main-section {
   padding: 15px;
   text-align: center;
   transition: box-shadow 0.3s ease;
+  height: 444px;
 }
 
 .unique-product-card:hover {
@@ -2124,6 +2130,78 @@ right: 131px;
   .categories-row.blog h2 {
     font-size: 14px;
 }
+.related-product-grid-productpage {
+  display: block !important;
+}
+.related-product-product-card-link-cat-col.coll-col-productpage{
+  width: 100% !important;
+  padding: 0px !important;
+}
+.footer-main .col_flex h4{
+  font-size: 16px;
+}
+.blog-page.container-with .sidebar {
+  display: none;
+}
+.blog-grid {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: auto !important;
+  gap: 20px !important;
+}
+.single-blog-page h1 {
+  font-size: 20px;
+}
+.single-blog-page {
+  width: 88% !important;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+form.blog-form {
+  width: 90%;
+}
+.unique-product-grid {
+  display: grid;
+  grid-template-columns: auto;
+  gap: 20px;
+}
+.related-product-grid, .recently-viewed-grid {
+  display: grid;
+  grid-template-columns: auto;
+}
+.product-main-section{
+  display:block;
+}
+.thumbnail-images {
+  overflow: scroll;
+}
+.short {
+  display: none;
+}
+.categories-row .blog-grid {
+  display: grid;
+  grid-template-columns: auto !important;
+  gap: 20px;
+  width: 100%;
+}
+.shop-container {
+  display: block;
+padding-top: 40px 0px 0px 0px !important;
+}
+.shop-container.container-with .products {
+  padding: 0px;
+}
+div#shop_page {
+  display: grid;
+  grid-template-columns: auto;
+  column-gap: 30px;
+  row-gap: 20px;
+  width: 100%;
+}
+.shop-container.container-with .sidebar {
+  display: none;
+}
 .row-3-col-2 .social-icons ul {
   display: none;
 }
@@ -2257,6 +2335,18 @@ p.cat-title {
 }
 }
 @media(max-width:425px){
+  .related-product-grid img ,.recently-viewed-grid img{
+    width: 100%;
+  }
+  .thumbnail-images {
+    display: none;
+}
+  .social-icons ul li{
+    gap: 4px;
+  }
+  .action-buttons {
+    padding-top: 20px;
+}
 .categories-row .cat-col-1 {
   margin: 20px;
   width: 100%;

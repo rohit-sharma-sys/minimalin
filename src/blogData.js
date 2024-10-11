@@ -4,7 +4,7 @@ export const blogs = [
       title: 'The Art of Layering: Creating Stylish and Functional Outfits',
       content: 'Detailed content about layering outfits...',
       quote: 'Fashion is not just about clothes; it’s about a way of life.',
-      imageUrl: require('./images/first-blog.webp'), // Use require for images in the src folder
+      imageUrl: require('./images/first-blog.webp'), 
       date: 'August 01, 2023',
       author: 'Marino Themes',
       comments: 2,

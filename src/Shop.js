@@ -19,7 +19,7 @@ function Shop() {
     const { enqueueSnackbar } = useSnackbar();
     const [popupVisible, setPopupVisible] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
-  
+   
   
     useEffect(() => {
         setLoading(true);
