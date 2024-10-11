@@ -1,40 +1,45 @@
-import React, { useEffect } from 'react';
-import './App.css';
-import Home from './Pages/Home';
-import Header from './header-footer/Header';
-import Footer from './header-footer/Footer';
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import Shop from './Shop';
-import SingleProducts from './Pages/SingleProducts';
-import { CartProvider } from './Pages/CartContext'; 
-import CartPage from './Pages/CartPage';
-import CheckoutPage from './Pages/CheckoutPage';
-import PaymentPage from './Pages/PaymentPage';
-import CategoriesPage from './CategoriesPage';
-import SingleCategory from './SingleCategory';
-import { SnackbarProvider } from 'notistack';
-import Product from './Product';
-import BlogComponent from './BlogComponent';
-import SingleBlogPage from './SingleBlogPage';
+import React, { useEffect } from "react";
+import "./App.css";
+import Home from "./Pages/Home";
+import Header from "./header-footer/Header";
+import Footer from "./header-footer/Footer";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import Shop from "./Shop";
+import SingleProducts from "./Pages/SingleProducts";
+import { CartProvider } from "./Pages/CartContext";
+import CartPage from "./Pages/CartPage";
+import CheckoutPage from "./Pages/CheckoutPage";
+import PaymentPage from "./Pages/PaymentPage";
+import CategoriesPage from "./CategoriesPage";
+import SingleCategory from "./SingleCategory";
+import { SnackbarProvider } from "notistack";
+import Product from "./Product";
+import BlogComponent from "./BlogComponent";
+import SingleBlogPage from "./SingleBlogPage";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);  
-  }, [pathname]);  
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
-  return null;  
+  return null;
 }
 
 function App() {
   return (
     <Router>
-      <CartProvider> 
-        <SnackbarProvider maxSnack={3}> 
+      <CartProvider>
+        <SnackbarProvider maxSnack={3}>
           <div className="app">
             <Header />
-            <ScrollToTop /> 
+            <ScrollToTop />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="shop" element={<Shop />} />
@@ -44,10 +49,9 @@ function App() {
               <Route path="BlogComponent" element={<BlogComponent />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/payment" element={<PaymentPage />} />
-              <Route path="/CategoriesPage" element={<CategoriesPage/>} />
-              <Route path="/SingleCategory/:slug" element={<SingleCategory />} /> 
-              <Route path="/Product" element={<Product />} /> 
-
+              <Route path="/CategoriesPage" element={<CategoriesPage />} />
+              <Route path="/SingleCategory/:slug"element={<SingleCategory />} />
+              <Route path="/Product" element={<Product />} />
             </Routes>
             <Footer />
           </div>

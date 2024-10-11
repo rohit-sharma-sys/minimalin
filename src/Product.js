@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { CartContext } from "./Pages/CartContext";
-import LOader from './Pages/LOader'; // Assuming LOader is the loader component
+import LOader from './Pages/LOader'; 
 
 function Product() {
   const [popupVisible, setPopupVisible] = useState(false);
@@ -10,8 +10,7 @@ function Product() {
   const [products, setProducts] = useState([]);
   const { addToCart } = useContext(CartContext);
   const { enqueueSnackbar } = useSnackbar();
-  const [loading, setLoading] = useState(true); // Track loading state
-
+  const [loading, setLoading] = useState(true); 
   useEffect(() => {
     setLoading(true);
     fetch('https://dummyjson.com/products')
@@ -42,7 +41,7 @@ function Product() {
   };
 
   if (loading) {
-    return <LOader />; // Show the loader while products are being fetched
+    return <LOader />; 
   }
 
   return (

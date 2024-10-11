@@ -64,7 +64,7 @@ function BlogComponent() {
               <Link to={`/blog/${blog.id}`}><h2>{blog.title}</h2></Link>
               <div className="blog-meta">
                 <span>{blog.date}</span>
-                <span>{blog.comments} comments</span>
+                <span>{blog.comments} comments </span>
               </div>
               <p>{blog.description}</p>
               <Link to={`/blog/${blog.id}`} className="read-more">Read More</Link>
