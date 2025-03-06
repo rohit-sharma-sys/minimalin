@@ -146,7 +146,9 @@ function Header() {
               <li className="nav-items">
                 <Link to="./BlogComponent">Blog</Link>
               </li>
-              <li className="nav-items">Pages</li>
+              <li className="nav-items">
+              <Link to="./contact">Contact Us</Link>
+              </li>
             </ul>
             <i
               className={`fa ${isNavbarOpen ? "fa-times" : "fa-bars"}`}
